@@ -1,0 +1,21 @@
+[package]
+name = "porquinho"
+version = "0.1.0"
+edition = "2024"
+authors = ["Andrew S Aguiar <andrewaguiar6@gmail.com>"]
+description = "A small interactive CLI vault that keeps API keys encrypted at rest with AES-256-GCM"
+license = "MIT"
+readme = "README.md"
+documentation = "https://github.com/andrewaguiar/porquinho"
+homepage = "https://github.com/andrewaguiar/porquinho"
+repository = "https://github.com/andrewaguiar/porquinho"
+keywords = ["cli", "vault", "secrets", "encryption", "api-keys"]
+categories = ["command-line-utilities", "cryptography"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+aes-gcm = "0.10"
+base64 = "0.22"
+rpassword = "7"
