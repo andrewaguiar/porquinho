@@ -43,7 +43,9 @@ fn main() {
             "/show" => commands::show::run(&entries, &key),
             "/help" => commands::help::run(),
             "/quit" | "/exit" => break,
-            other => cli::error(&format!("Unknown command '{other}'. Type /help for commands.")),
+            other => cli::error(&format!(
+                "Unknown command '{other}'. Type /help for commands."
+            )),
         }
     }
 }

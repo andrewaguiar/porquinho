@@ -1,8 +1,8 @@
-use aes_gcm::aead::rand_core::RngCore;
 use aes_gcm::aead::OsRng;
+use aes_gcm::aead::rand_core::RngCore;
 use aes_gcm::{Aes256Gcm, Key};
-use base64::engine::general_purpose::STANDARD as B64;
 use base64::Engine;
+use base64::engine::general_purpose::STANDARD as B64;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
@@ -59,7 +59,8 @@ pub fn verify_master_key(key: &Key<Aes256Gcm>) -> bool {
             Err(_) => false,
         }
     } else {
-        fs::write(&path, crypto::encrypt(key, CHECK_PLAINTEXT)).expect("failed to write check file");
+        fs::write(&path, crypto::encrypt(key, CHECK_PLAINTEXT))
+            .expect("failed to write check file");
         cli::success("Master key registered for this vault.");
         true
     }
