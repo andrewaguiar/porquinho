@@ -8,7 +8,7 @@ use std::fs;
 use cli::{CYAN, GREEN, RESET};
 
 fn main() {
-    fs::create_dir_all(vault::porquinho_dir()).expect("failed to create ~/.porquinho");
+    fs::create_dir_all(vault::porquinho_dir()).expect("failed to create vault directory");
 
     cli::print_banner();
 

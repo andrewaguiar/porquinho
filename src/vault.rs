@@ -6,6 +6,7 @@ use base64::engine::general_purpose::STANDARD as B64;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
+use std::sync::OnceLock;
 
 use crate::cli;
 use crate::crypto;
@@ -19,21 +20,24 @@ pub struct Entry {
     pub key: String,
 }
 
-pub fn porquinho_dir() -> PathBuf {
-    let home = std::env::var("HOME").expect("HOME environment variable not set");
-    PathBuf::from(home).join(".porquinho")
+pub fn porquinho_dir() -> &'static PathBuf {
+    static DIR: OnceLock<PathBuf> = OnceLock::new();
+    DIR.get_or_init(|| {
+        let home = std::env::var("HOME").expect("HOME environment variable not set");
+        PathBuf::from(home).join(".66251a1c61a1bfaeed88b163b6908b258a7af9ba")
+    })
 }
 
 fn config_path() -> PathBuf {
-    porquinho_dir().join("config.json")
+    porquinho_dir().join("c")
 }
 
 fn salt_path() -> PathBuf {
-    porquinho_dir().join("salt")
+    porquinho_dir().join("s")
 }
 
 fn check_path() -> PathBuf {
-    porquinho_dir().join("check")
+    porquinho_dir().join("k")
 }
 
 pub fn load_or_create_salt() -> Vec<u8> {
@@ -71,13 +75,13 @@ pub fn load_entries(key: &Key<Aes256Gcm>) -> Vec<Entry> {
     if !path.exists() {
         return Vec::new();
     }
-    let content = fs::read_to_string(&path).expect("failed to read config.json");
-    let json = crypto::decrypt(key, content.trim()).expect("failed to decrypt config.json");
-    serde_json::from_str(&json).expect("config.json is corrupted")
+    let content = fs::read_to_string(&path).expect("failed to read vault file");
+    let json = crypto::decrypt(key, content.trim()).expect("failed to decrypt vault file");
+    serde_json::from_str(&json).expect("vault file is corrupted")
 }
 
 pub fn save_entries(entries: &[Entry], key: &Key<Aes256Gcm>) {
     let json = serde_json::to_string(entries).expect("failed to serialize entries");
     fs::write(config_path(), crypto::encrypt(key, json.as_bytes()))
-        .expect("failed to write config.json");
+        .expect("failed to write vault file");
 }
